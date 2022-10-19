@@ -12,7 +12,7 @@
   failed_when: false
 
 - name: Create Fyre OCP Quickburn
-  when: ocpexistance.json.status is defined # Status is only defined if cluster does not exist
+  #when: ocpexistance.json.status is defined # Status is only defined if cluster does not exist
   block:
   #START BLOCK
   - debug:
