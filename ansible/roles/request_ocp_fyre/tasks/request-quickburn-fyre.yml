@@ -47,7 +47,7 @@
    - "{{error_status.json.status}}"
    - "{{error_status.json.details}}"
   when:
-  - error_status.json.status is defined
+  #- error_status.json.status is defined
   - (error_status.json.status) == 'error'
 
 - name: check that all fyre nodes have a deployed status
@@ -61,7 +61,8 @@
     force_basic_auth: "{{ fyre_force_basic_auth }}"
   changed_when: false
   register: cluster_status_response
-  until: (cluster_status_response.status == 200) and cluster_status_response.json is defined and (cluster_status_response.json.clusters[0].deployment_status  =="deployed" or cluster_status_response.json.clusters[0].deployment_status == "failed")
+  #until: (cluster_status_response.status == 200) and cluster_status_response.json is defined and (cluster_status_response.json.clusters[0].deployment_status  =="deployed" or cluster_status_response.json.clusters[0].deployment_status == "failed")
+  until: (cluster_status_response.status == 200) and (cluster_status_response.json.clusters[0].deployment_status  =="deployed" or cluster_status_response.json.clusters[0].deployment_status == "failed")
   retries: 600
   delay: 20
 
