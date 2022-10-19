@@ -12,7 +12,7 @@
   failed_when: false
 
 - name: Create Fyre OCP Quickburn
-  #when: ocpexistance.json.status is defined # Status is only defined if cluster does not exist
+  when: ocpexistance.json.status is not undefined # Status is only defined if cluster does not exist
   block:
   #START BLOCK
   - debug:
@@ -47,7 +47,7 @@
    - "{{error_status.json.status}}"
    - "{{error_status.json.details}}"
   when:
-  #- error_status.json.status is defined
+  - error_status.json.status is not undefined
   - (error_status.json.status) == 'error'
 
 - name: check that all fyre nodes have a deployed status
@@ -61,8 +61,8 @@
     force_basic_auth: "{{ fyre_force_basic_auth }}"
   changed_when: false
   register: cluster_status_response
-  #until: (cluster_status_response.status == 200) and cluster_status_response.json is defined and (cluster_status_response.json.clusters[0].deployment_status  =="deployed" or cluster_status_response.json.clusters[0].deployment_status == "failed")
-  until: (cluster_status_response.status == 200) and (cluster_status_response.json.clusters[0].deployment_status  =="deployed" or cluster_status_response.json.clusters[0].deployment_status == "failed")
+  until: (cluster_status_response.status == 200) and cluster_status_response.json is not undefined and (cluster_status_response.json.clusters[0].deployment_status  =="deployed" or cluster_status_response.json.clusters[0].deployment_status == "failed")
+  #until: (cluster_status_response.status == 200) and (cluster_status_response.json.clusters[0].deployment_status  =="deployed" or cluster_status_response.json.clusters[0].deployment_status == "failed")
   retries: 600
   delay: 20
 
@@ -72,7 +72,7 @@
    - "{{cluster_status_response.json.status}}"
    - "{{cluster_status_response.json.details}}"
   when:
-  - cluster_status_response.json.status is defined
+  - cluster_status_response.json.status is not undefined
   - (cluster_status_response.json.status) == 'error'
 
 - name: Derive Info from Fyre Api
