@@ -9,7 +9,7 @@
       body_format: "json"
       force_basic_auth: "{{ fyre_force_basic_auth }}"
       body:
-        name : "{{ clusterName }}"
+        name : "{{ clusterName | default(omit) }}"
         ocp_version: "{{ ocpVersion }}"
         platform: "{{ ocpPlatform }}"
         site: "{{fyre_site | default(omit)}}"
